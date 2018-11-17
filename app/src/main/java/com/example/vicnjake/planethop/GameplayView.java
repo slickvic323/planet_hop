@@ -25,7 +25,6 @@ public class GameplayView extends SurfaceView implements Runnable{
     private DrawableObject homePlanet;
     private DrawableObject gravity;
     private DrawableObject pilot;
-    public int pilotx, piloty;
     public int angle;
 
 
@@ -41,6 +40,7 @@ public class GameplayView extends SurfaceView implements Runnable{
         homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
         pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
+
 
         setFocusable(true);
 
@@ -66,6 +66,7 @@ public class GameplayView extends SurfaceView implements Runnable{
             draw();
         }
     }
+
 
 
     private void draw () {
@@ -98,8 +99,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 //            canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             canvas.drawBitmap(
                     pilot.getBitmap(),
-                    pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130),
-                    pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130),
+                    pilot.getCoords()[0],//+(int)(Math.cos(Math.toRadians(angle))*130),
+                    pilot.getCoords()[1],//+(int)(Math.sin(Math.toRadians(angle))*130),
                     paint
 
             );
@@ -129,7 +130,6 @@ public class GameplayView extends SurfaceView implements Runnable{
         }
         return true;
     }
-
 
 
     public void resume () {
