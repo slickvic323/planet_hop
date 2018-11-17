@@ -53,9 +53,21 @@ public class GameplayActivity extends AppCompatActivity {
         planetList.add(new Planet(50,90, 100,150));
 
         for(int i = 0;i<3;i++){
-            planetList.add(new Planet())
+            //planetList.add(new Planet())
         }
 
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        gameplayView.resume();
+    }
+
+    @Override
+    protected void onPause () {
+        super.onPause();
+        gameplayView.pause();
     }
 
 }
