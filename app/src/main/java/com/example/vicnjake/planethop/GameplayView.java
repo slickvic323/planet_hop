@@ -3,8 +3,10 @@ package com.example.vicnjake.planethop;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -34,8 +36,6 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.screenSizeY = screenSizeY;
         paint = new Paint();
 
-        pilotx=screenSizeX/2;
-        piloty=(screenSizeY*9/10);
         angle=0;
 
         homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
@@ -48,6 +48,8 @@ public class GameplayView extends SurfaceView implements Runnable{
             // Get surfaceHolder object.
             surfaceHolder = getHolder();
         }
+
+
 
         // Set the parent view background color. This can not set surfaceview background color.
         this.setBackgroundColor(Color.parseColor("#2F5063"));
@@ -69,7 +71,8 @@ public class GameplayView extends SurfaceView implements Runnable{
     private void draw () {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
-            
+
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
             Log.i("DEBUGGIN!", String.valueOf((int)(Math.cos(Math.toRadians(angle%360))*130)));
             canvas.drawBitmap(
@@ -86,12 +89,16 @@ public class GameplayView extends SurfaceView implements Runnable{
                     paint
 
             );
+//            Matrix matrix = new Matrix();
+//            matrix.reset();
+//            matrix.postTranslate(-pilot.getBitmap().getWidth() / 2, -pilot.getBitmap().getHeight() / 2); // Centers image
+//            matrix.postRotate(angle);
+//            matrix.postTranslate(pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
+//            canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             canvas.drawBitmap(
                     pilot.getBitmap(),
                     pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130),
                     pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130),
-                    //pilotx + (int)(Math.cos(Math.toRadians(angle))*130),
-                    //piloty + (int)(Math.sin(Math.toRadians(angle))*130),
                     paint
 
             );
