@@ -34,4 +34,8 @@ public class DrawableObject {
     public Bitmap getBitmap() {
         return bitmap;
     }
+
+    public void setCoords(int[] coords) {
+        this.coords = coords;
+    }
 }
