@@ -99,8 +99,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 //            canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             canvas.drawBitmap(
                     pilot.getBitmap(),
-                    pilot.getCoords()[0],//+(int)(Math.cos(Math.toRadians(angle))*130),
-                    pilot.getCoords()[1],//+(int)(Math.sin(Math.toRadians(angle))*130),
+                    pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130),
+                    pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130),
                     paint
 
             );
