@@ -27,7 +27,7 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.screenSizeY = screenSizeY;
         paint = new Paint();
 
-        homePlanet = new DrawableObject(context, new int[]{100, 100}, new int[]{50, 50});
+        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{0, 0}, new int[]{100, 100});
 
         setFocusable(true);
 

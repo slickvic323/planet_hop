@@ -3,6 +3,7 @@ package com.example.vicnjake.planethop;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 
 public class DrawableObject {
 
@@ -10,11 +11,14 @@ public class DrawableObject {
     private static int[] dimensions;
     private Bitmap bitmap;
 
-    public DrawableObject (Context context, int[] coords, int[] dimensions) {
+    public DrawableObject (Context context, int image, int[] coords, int[] dimensions) {
+        // Center the object (draw image center at coordinates given)
         this.coords = coords;
+        this.coords[0]-=(dimensions[0]/2);
+        this.coords[1]-=(dimensions[1]/2);
         this.dimensions = dimensions;
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.planet1);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), image);
         bitmap = changeScale(bitmap);
     }
 
