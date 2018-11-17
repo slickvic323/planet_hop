@@ -23,7 +23,6 @@ public class GameplayView extends SurfaceView implements Runnable{
     private DrawableObject homePlanet;
     private DrawableObject gravity;
     private DrawableObject pilot;
-    public int pilotx, piloty;
     public int angle;
 
 
@@ -34,12 +33,11 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.screenSizeY = screenSizeY;
         paint = new Paint();
 
-        pilotx=screenSizeX/2;
-        piloty=(screenSizeY*9/10);
         angle=0;
 
         homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
+        pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, screenSizeY*9/10}, new int[]{50, 50});
 
         setFocusable(true);
 
@@ -67,7 +65,7 @@ public class GameplayView extends SurfaceView implements Runnable{
     }
 
     private void update () {
-        updatePilotPosition();
+        // pilot.setCoords(new int[]{pilot.getCoords()[0]+3, pilot.getCoords()[1]});
     }
 
     private void draw () {
@@ -92,10 +90,8 @@ public class GameplayView extends SurfaceView implements Runnable{
             );
             canvas.drawBitmap(
                     pilot.getBitmap(),
-                    pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130),
-                    pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130),
-                    //pilotx + (int)(Math.cos(Math.toRadians(angle))*130),
-                    //piloty + (int)(Math.sin(Math.toRadians(angle))*130),
+                    pilot.getCoords()[0],//+(int)(Math.cos(Math.toRadians(angle))*130),
+                    pilot.getCoords()[1],//+(int)(Math.sin(Math.toRadians(angle))*130),
                     paint
 
             );
@@ -126,12 +122,6 @@ public class GameplayView extends SurfaceView implements Runnable{
         return true;
     }
 
-
-    private void updatePilotPosition () {
-        pilotx += (int)(Math.cos(Math.toRadians(angle%360))*125);
-        piloty += (int)(Math.sin(Math.toRadians(angle%360))*125);
-        pilot.setCoords(new int[]{pilotx, piloty});
-    }
 
     public void resume () {
         running = true;
