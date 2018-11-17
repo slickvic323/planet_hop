@@ -40,6 +40,7 @@ public class GameplayView extends SurfaceView implements Runnable{
 
         homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
+        pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
 
         setFocusable(true);
 
@@ -61,14 +62,11 @@ public class GameplayView extends SurfaceView implements Runnable{
     @Override
     public void run () {
         while (running) {
-            update();
+
             draw();
         }
     }
 
-    private void update () {
-        updatePilotPosition();
-    }
 
     private void draw () {
         if (surfaceHolder.getSurface().isValid()) {
@@ -133,11 +131,6 @@ public class GameplayView extends SurfaceView implements Runnable{
     }
 
 
-    private void updatePilotPosition () {
-        pilotx += (int)(Math.cos(Math.toRadians(angle%360))*125);
-        piloty += (int)(Math.sin(Math.toRadians(angle%360))*125);
-        pilot.setCoords(new int[]{pilotx, piloty});
-    }
 
     public void resume () {
         running = true;
