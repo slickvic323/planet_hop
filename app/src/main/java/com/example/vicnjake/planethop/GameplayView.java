@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -66,6 +67,29 @@ public class GameplayView extends SurfaceView implements Runnable{
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
+
+
+    @Override
+    public boolean onTouchEvent (MotionEvent motionEvent) {
+        int action = motionEvent.getAction();
+        float touchedX, touchedY;
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                touchedX = motionEvent.getX();
+                touchedY = motionEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                touchedX = motionEvent.getX();
+                touchedY = motionEvent.getY();
+                System.out.println(touchedX);
+                System.out.println(touchedY);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
 
 
     public void resume () {
