@@ -49,8 +49,6 @@ public class GameplayView extends SurfaceView implements Runnable{
             surfaceHolder = getHolder();
         }
 
-
-
         // Set the parent view background color. This can not set surfaceview background color.
         this.setBackgroundColor(Color.parseColor("#2F5063"));
 
@@ -72,6 +70,7 @@ public class GameplayView extends SurfaceView implements Runnable{
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
 
+            //clear screen
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
             Log.i("DEBUGGIN!", String.valueOf((int)(Math.cos(Math.toRadians(angle%360))*130)));
