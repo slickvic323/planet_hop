@@ -38,4 +38,17 @@ public class GameplayActivity extends AppCompatActivity {
         //Set the content view to our new gameplay view
         setContentView(gameplayView);
     }
+
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        gameplayView.resume();
+    }
+
+    @Override
+    protected void onPause () {
+        super.onPause();
+        gameplayView.pause();
+    }
 }
