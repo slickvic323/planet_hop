@@ -1,44 +1,34 @@
 package com.example.vicnjake.planethop;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class GameplayView extends SurfaceView implements Runnable {
-    private boolean running;
-    private Thread titleThread = null;
-    private Paint paint;
-    private Canvas canvas;
-    private SurfaceHolder surfaceHolder;
-    private int[] screenDims;
-    private Context context;
+public class GameplayView extends SurfaceView {
+    private SurfaceHolder surfaceHolder = null;
 
 
 
-    public GameplayView (Context context, int[] screenDims) {
+    public GameplayView(Context context, int screenSizeX, int screenSizeY) {
         super(context);
-        this.context = context;
-        this.screenDims = screenDims;
 
-        surfaceHolder = getHolder();
-        paint = new Paint();
 
-    }
+        setFocusable(true);
 
-    @Override
-    public void run () {
-        while (running) {
-
+        if(surfaceHolder == null) {
+            // Get surfaceHolder object.
+            surfaceHolder = getHolder();
         }
-    }
 
-    public void draw () {
 
-    }
+        // Set the parent view background color. This can not set surfaceview background color.
+        this.setBackgroundColor(Color.parseColor("#2F5063"));
 
-    public void update() {
+        // Set current surfaceview at top of the view tree.
+        this.setZOrderOnTop(true);
 
+        this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 }
