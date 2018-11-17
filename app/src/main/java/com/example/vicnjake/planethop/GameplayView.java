@@ -91,6 +91,7 @@ public class GameplayView extends SurfaceView implements Runnable{
                     paint
 
             );
+
             Matrix matrix = new Matrix();
             matrix.reset();
             matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
@@ -100,6 +101,7 @@ public class GameplayView extends SurfaceView implements Runnable{
             matrix.postTranslate(pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
             canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             angle=(angle+3)%360;
+
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
