@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import java.lang.*;
 
 public class GameplayView extends SurfaceView implements Runnable{
     volatile boolean running;
@@ -18,6 +20,10 @@ public class GameplayView extends SurfaceView implements Runnable{
     private int screenSizeX, screenSizeY;
 
     private DrawableObject homePlanet;
+    private DrawableObject gravity;
+    private DrawableObject pilot;
+    public int pilotx, piloty;
+    public int angle;
 
 
     public GameplayView(Context context, int screenSizeX, int screenSizeY) {
@@ -27,7 +33,13 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.screenSizeY = screenSizeY;
         paint = new Paint();
 
-        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{0, 0}, new int[]{100, 100});
+        pilotx=screenSizeX/2+125;
+        piloty=(screenSizeY*9/10);
+        angle=0;
+
+        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
+        gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
+        pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2+125, (screenSizeY*9/10)}, new int[]{50, 50});
 
         setFocusable(true);
 
@@ -56,10 +68,27 @@ public class GameplayView extends SurfaceView implements Runnable{
     private void draw () {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
+            
+            angle+=1;
+            Log.i("DEBUGGIN!", String.valueOf(Math.cos(Math.toRadians(angle%360))*125));
             canvas.drawBitmap(
                 homePlanet.getBitmap(),
                     homePlanet.getCoords()[0],
                     homePlanet.getCoords()[1],
+                    paint
+
+            );
+            canvas.drawBitmap(
+                    gravity.getBitmap(),
+                    gravity.getCoords()[0],
+                    gravity.getCoords()[1],
+                    paint
+
+            );
+            canvas.drawBitmap(
+                    pilot.getBitmap(),
+                    pilotx + (int)(Math.cos(Math.toRadians(angle%360))*125),
+                    piloty + (int)(Math.sin(Math.toRadians(angle%360))*125),
                     paint
 
             );
