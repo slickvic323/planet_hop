@@ -17,7 +17,7 @@ public class DrawableObject {
         this.coords = new int[]{0,0};
         this.coords[0]=coords[0]-(dimensions[0]/2);
         this.coords[1]=coords[1]-(dimensions[1]/2);
-        Log.i("DIMENSIONS", String.valueOf(coords[0]));
+        //Log.i("DIMENSIONS", String.valueOf(coords[0]));
         this.dimensions = dimensions;
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), image);

@@ -24,9 +24,10 @@ public class GameplayView extends SurfaceView implements Runnable{
 
     private int screenSizeX, screenSizeY;
 
-    private DrawableObject homePlanet;
-    private DrawableObject gravity;
-    private DrawableObject pilot;
+//    private DrawableObject homePlanet;
+//    private DrawableObject gravity;
+//    private DrawableObject pilot;
+    private Pilot pilot;
     public int angle;
 
     GameInfo gameInfo;
@@ -52,7 +53,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 
         //homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         //gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
-        pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
+        //pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
+        pilot = new Pilot(context, new int[]{screenSizeX/2, (screenSizeY*9/10)});
 
         setFocusable(true);
 
@@ -124,12 +126,12 @@ public class GameplayView extends SurfaceView implements Runnable{
             matrix.postTranslate(-pilot.getBitmap().getWidth() / 2, -pilot.getBitmap().getHeight() / 2); // Centers image
             matrix.postRotate(angle);
             matrix.postTranslate(pilot.getBitmap().getWidth() / 2, pilot.getBitmap().getHeight() / 2); // Centers image
-            matrix.postTranslate(pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
+            matrix.postTranslate(pilot.getPlanetCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getPlanetCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
             canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             if(orbiting) {
                 pilotInOrbit();
             } else {
-                pilot.setCoords(new int[]{pilot.getCoords()[0], pilot.getCoords()[1]-5});
+                // pilot.setCoords(new int[]{pilot.getCoords()[0], pilot.getCoords()[1]-5});
             }
 
 
@@ -168,7 +170,7 @@ public class GameplayView extends SurfaceView implements Runnable{
 
     private void drawPlanets(ArrayList<Planet> planets){
         for(Planet planet: planets){
-            Log.i("planet coords:", String.valueOf(planet.getCoords()[0]));
+            //Log.i("planet coords:", String.valueOf(planet.getCoords()[0]));
             canvas.drawBitmap(
                     planet.getBitmap(),
                     planet.getCoords()[0],
@@ -176,7 +178,7 @@ public class GameplayView extends SurfaceView implements Runnable{
                     paint
 
             );
-            Log.i("Gravity coords:", String.valueOf(planet.getGravityCoords()[0]));
+            //Log.i("Gravity coords:", String.valueOf(planet.getGravityCoords()[0]));
             canvas.drawBitmap(
                     planet.getGravity(),
                     planet.getGravityCoords()[0],
