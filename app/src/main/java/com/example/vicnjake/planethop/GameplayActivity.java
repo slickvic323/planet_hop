@@ -45,18 +45,6 @@ public class GameplayActivity extends AppCompatActivity {
 
     }
 
-    private void startGame(GameInfo playerInfo){
-        //create list of planets
-        ArrayList<Planet> planetList = new ArrayList<>();
-
-        //generate home planet
-        planetList.add(new Planet(50,90, 100,150));
-
-        for(int i = 0;i<3;i++){
-            //planetList.add(new Planet())
-        }
-
-    }
 
     @Override
     protected void onResume () {
