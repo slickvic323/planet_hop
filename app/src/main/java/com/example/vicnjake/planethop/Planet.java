@@ -1,39 +1,47 @@
 package com.example.vicnjake.planethop;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
+
 public class Planet {
-    private int percentX, percentY;
-    private int radius;
+
+
+
+    private int[] originalCoords;
     private int gravitationalRadius;
+    private DrawableObject drawableObject;
+    private DrawableObject drawableGravity;
 
-    public Planet(int percentX, int percentY, int radius, int gravitationalRadius) {
-        this.percentX = percentX;
-        this.percentY = percentY;
-        this.radius = radius;
+    public Planet(Context context, int[] myCoords, int[] dimensions, int gravitationalRadius) {
+
+        this.originalCoords = new int[]{myCoords[0], myCoords[1]};
         this.gravitationalRadius = gravitationalRadius;
+        //TODO: random planet image, rotation, and color
+        this.drawableObject = new DrawableObject(context, R.drawable.planet1 ,myCoords, dimensions);
+        this.drawableGravity = new DrawableObject(context, R.drawable.gravity, myCoords, new int[]{dimensions[0]+gravitationalRadius, dimensions[1]+gravitationalRadius});
     }
 
-    public int getPercentX() {
-        return percentX;
+    public int[] getCoords() {
+        //Log.i("GETTING COORDS", drawableObject.getCoords()[0] + " " + drawableObject.getCoords()[1]);
+        return drawableObject.getCoords();
     }
 
-    public void setPercentX(int percentX) {
-        this.percentX = percentX;
+    public int[] getGravityCoords(){
+        //Log.i("GETTING COORDS", drawableGravity.getCoords()[0] + " " + drawableGravity.getCoords()[1]);
+        return drawableGravity.getCoords();
     }
 
-    public int getPercentY() {
-        return percentY;
+    public Bitmap getBitmap() {
+        return drawableObject.getBitmap();
     }
 
-    public void setPercentY(int percentY) {
-        this.percentY = percentY;
+    public Bitmap getGravity() {
+        return drawableGravity.getBitmap();
     }
 
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public int[] getOriginalCoords() {
+        return originalCoords;
     }
 
     public int getGravitationalRadius() {

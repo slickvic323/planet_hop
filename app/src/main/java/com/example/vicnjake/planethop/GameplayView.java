@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.lang.*;
+import java.util.ArrayList;
 
 public class GameplayView extends SurfaceView implements Runnable{
     volatile boolean running;
@@ -27,6 +28,7 @@ public class GameplayView extends SurfaceView implements Runnable{
     private DrawableObject pilot;
     public int angle;
 
+    public ArrayList<Planet> planetList;
 
     public GameplayView(Context context, int screenSizeX, int screenSizeY) {
         super(context);
@@ -37,8 +39,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 
         angle=0;
 
-        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
-        gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
+        //homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
+        //gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
         pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
 
 
@@ -56,6 +58,16 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.setZOrderOnTop(true);
 
         this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
+        //Create original planet list
+        planetList = new ArrayList<Planet>();
+
+        //generate home planet
+        planetList.add(new Planet(context,new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200},60));
+
+//        for(int i = 0;i<2;i++){
+//            //planetList.add(new Planet())
+//        }
 
     }
 
@@ -76,21 +88,25 @@ public class GameplayView extends SurfaceView implements Runnable{
             //clear screen
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
-            Log.i("DEBUGGIN!", String.valueOf((int)(Math.cos(Math.toRadians(angle%360))*130)));
-            canvas.drawBitmap(
-                homePlanet.getBitmap(),
-                    homePlanet.getCoords()[0],
-                    homePlanet.getCoords()[1],
-                    paint
+            //Log.i("DEBUGGIN!", String.valueOf((int)(Math.cos(Math.toRadians(angle%360))*130)));
 
-            );
-            canvas.drawBitmap(
-                    gravity.getBitmap(),
-                    gravity.getCoords()[0],
-                    gravity.getCoords()[1],
-                    paint
+            //Draw all planets in list
+            drawPlanets(planetList);
 
-            );
+//            canvas.drawBitmap(
+//                    homePlanet.getBitmap(),
+//                    homePlanet.getCoords()[0],
+//                    homePlanet.getCoords()[1],
+//                    paint
+//
+//            );
+//            canvas.drawBitmap(
+//                    gravity.getBitmap(),
+//                    gravity.getCoords()[0],
+//                    gravity.getCoords()[1],
+//                    paint
+//
+//            );
 
             Matrix matrix = new Matrix();
             matrix.reset();
@@ -106,6 +122,25 @@ public class GameplayView extends SurfaceView implements Runnable{
         }
     }
 
+    private void drawPlanets(ArrayList<Planet> planets){
+        for(Planet planet: planets){
+            Log.i("planet coords:", String.valueOf(planet.getCoords()[0]));
+            canvas.drawBitmap(
+                    planet.getBitmap(),
+                    planet.getCoords()[0],
+                    planet.getCoords()[1],
+                    paint
+
+            );
+            Log.i("Gravity coords:", String.valueOf(planet.getGravityCoords()[0]));
+            canvas.drawBitmap(
+                    planet.getGravity(),
+                    planet.getGravityCoords()[0],
+                    planet.getGravityCoords()[1],
+                    paint
+            );
+        }
+    }
 
     @Override
     public boolean onTouchEvent (MotionEvent motionEvent) {
