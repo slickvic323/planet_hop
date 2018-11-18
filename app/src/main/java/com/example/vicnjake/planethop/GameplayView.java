@@ -35,6 +35,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 
     private boolean orbiting = true;
 
+
+
     public ArrayList<Planet> planetList;
 
     public GameplayView(Context context, int screenSizeX, int screenSizeY) {
@@ -51,7 +53,6 @@ public class GameplayView extends SurfaceView implements Runnable{
         //homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         //gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
         pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
-
 
         setFocusable(true);
 
@@ -128,12 +129,7 @@ public class GameplayView extends SurfaceView implements Runnable{
             if(orbiting) {
                 pilotInOrbit();
             } else {
-//                float[] pts = new float[2];
-//                pts[0] = (float) pilot.getCoords()[0];
-//                pts[1] = (float) pilot.getCoords()[1];
-//                matrix.mapPoints(pts);
-//                Log.i("pointX", String.valueOf(pilot.getCoords()[0]));
-//                Log.i("pointY", String.valueOf(pilot.getCoords()[1]));
+                pilot.setCoords(new int[]{pilot.getCoords()[0], pilot.getCoords()[1]-5});
             }
 
 
@@ -198,7 +194,11 @@ public class GameplayView extends SurfaceView implements Runnable{
             case MotionEvent.ACTION_DOWN:
                 touchedX = motionEvent.getX();
                 touchedY = motionEvent.getY();
-                orbiting = false;
+                if (orbiting) {
+                    orbiting = false;
+                } else {
+                    orbiting = true;
+                }
                 Log.i("Angle", String.valueOf(angle));
                 break;
             case MotionEvent.ACTION_UP:
