@@ -38,6 +38,8 @@ public class DrawableObject {
     }
 
     public void setCoords(int[] coords) {
-        this.coords = coords;
+        this.coords = new int[]{0,0};
+        this.coords[0]=coords[0]-(dimensions[0]/2);
+        this.coords[1]=coords[1]-(dimensions[1]/2);
     }
 }

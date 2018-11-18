@@ -27,6 +27,11 @@ public class Pilot {
         return this.drawablePilot.getCoords();
     }
 
+    public void setPilotCoords(int[] coords){
+        this.drawablePilot.setCoords(coords);
+
+    }
+
     public int[] getOrbitingCoords(){
 
         return new int[]{orbitingPlanet.getOriginalCoords()[0]-25, orbitingPlanet.getOriginalCoords()[1]-25};

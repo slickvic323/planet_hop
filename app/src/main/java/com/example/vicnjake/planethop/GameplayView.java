@@ -36,7 +36,7 @@ public class GameplayView extends SurfaceView implements Runnable{
 
     private boolean orbiting = true;
 
-
+    Matrix matrix = new Matrix();
 
     public ArrayList<Planet> planetList;
 
@@ -106,33 +106,20 @@ public class GameplayView extends SurfaceView implements Runnable{
             //Draw all planets in list
             drawPlanets(planetList);
 
-//            canvas.drawBitmap(
-//                    homePlanet.getBitmap(),
-//                    homePlanet.getCoords()[0],
-//                    homePlanet.getCoords()[1],
-//                    paint
-//
-//            );
-//            canvas.drawBitmap(
-//                    gravity.getBitmap(),
-//                    gravity.getCoords()[0],
-//                    gravity.getCoords()[1],
-//                    paint
-//
-//            );
 
             // Changes the angle of the pilot ship
-            Matrix matrix = new Matrix();
-            matrix.reset();
-            matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
-            matrix.postRotate(angle,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
-            matrix.postTranslate(pilot.getOrbitingCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getOrbitingCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
-            canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
-            if(orbiting) {
-                pilotInOrbit();
-            } else {
-                // pilot.setCoords(new int[]{pilot.getCoords()[0], pilot.getCoords()[1]-5});
-            }
+            drawPilot();
+//            Matrix matrix = new Matrix();
+//            matrix.reset();
+//            matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
+//            matrix.postRotate(angle,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
+//            matrix.postTranslate(pilot.getOrbitingCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getOrbitingCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
+//            canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
+//            if(orbiting) {
+//                pilotInOrbit();
+//            } else {
+//                // pilot.setCoords(new int[]{pilot.getCoords()[0], pilot.getCoords()[1]-5});
+//            }
 
 
             if (!gameInfo.isPlaying()) {
@@ -198,6 +185,9 @@ public class GameplayView extends SurfaceView implements Runnable{
                 touchedY = motionEvent.getY();
                 if (orbiting) {
                     orbiting = false;
+                    float[] launchingPoint = new float[2];
+                    matrix.mapPoints(launchingPoint);
+                    pilot.setPilotCoords(new int[]{(int)launchingPoint[0], (int)launchingPoint[1]});
                 } else {
                     orbiting = true;
                 }
@@ -229,12 +219,26 @@ public class GameplayView extends SurfaceView implements Runnable{
         }
     }
 
-    private void pilotInOrbit () {
-        angle=(angle+3)%360;
-    }
 
-    private void getCoordsFromAngle (int gravitationalRadius) {
+    private void drawPilot(){
 
+        matrix.reset();
+
+        matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
+        matrix.postRotate(angle,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
+
+
+
+        //Decide what actions to perform on pilot
+        if(orbiting) {
+            matrix.postTranslate(pilot.getOrbitingCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getOrbitingCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
+            angle=(angle+3)%360;
+        } else {
+            matrix.postTranslate(pilot.getPilotCoords()[0], pilot.getPilotCoords()[1]);
+        }
+
+        //Draw pilot
+        canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
     }
 
 }
