@@ -192,6 +192,10 @@ public class GameplayView extends SurfaceView implements Runnable{
                     orbiting = true;
                 }
                 Log.i("Angle", String.valueOf(angle));
+
+                if (!gameInfo.isPlaying()) {
+                    gameInfo.setPlaying(true);
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 touchedX = motionEvent.getX();
