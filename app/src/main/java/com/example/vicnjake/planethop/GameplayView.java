@@ -54,7 +54,7 @@ public class GameplayView extends SurfaceView implements Runnable{
         //homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
         //gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
         //pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
-        pilot = new Pilot(context, new int[]{screenSizeX/2, (screenSizeY*9/10)});
+
 
         setFocusable(true);
 
@@ -80,6 +80,8 @@ public class GameplayView extends SurfaceView implements Runnable{
 //        for(int i = 0;i<2;i++){
 //            //planetList.add(new Planet())
 //        }
+
+        pilot = new Pilot(context, new int[]{screenSizeX/2, (screenSizeY*9/10)}, planetList.get(0));
 
     }
 
@@ -123,10 +125,8 @@ public class GameplayView extends SurfaceView implements Runnable{
             Matrix matrix = new Matrix();
             matrix.reset();
             matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
-            matrix.postTranslate(-pilot.getBitmap().getWidth() / 2, -pilot.getBitmap().getHeight() / 2); // Centers image
-            matrix.postRotate(angle);
-            matrix.postTranslate(pilot.getBitmap().getWidth() / 2, pilot.getBitmap().getHeight() / 2); // Centers image
-            matrix.postTranslate(pilot.getPlanetCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getPlanetCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
+            matrix.postRotate(angle,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
+            matrix.postTranslate(pilot.getOrbitingCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getOrbitingCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
             canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
             if(orbiting) {
                 pilotInOrbit();

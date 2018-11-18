@@ -27,6 +27,7 @@ public class Planet {
         return drawableObject.getCoords();
     }
 
+
     public int[] getGravityCoords(){
         //Log.i("GETTING COORDS", drawableGravity.getCoords()[0] + " " + drawableGravity.getCoords()[1]);
         return drawableGravity.getCoords();
