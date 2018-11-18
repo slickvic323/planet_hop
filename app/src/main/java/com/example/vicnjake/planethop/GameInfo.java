@@ -5,6 +5,16 @@ public class GameInfo {
     private int score;
     private int hiscore;
 
+    private final int MIN_GRAVITY_DIFF = 30;
+    private final int MAX_GRAVITY_DIFF = 250;
+    private final int MIN_PLANET_SIZE = 100;
+    private final int MAX_PLANET_SIZE = 300;
+
+    public GameInfo () {
+        isPlaying = false;
+        score = 0;
+    }
+
     public boolean isPlaying() {
         return isPlaying;
     }

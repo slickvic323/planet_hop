@@ -7,11 +7,16 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.lang.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.os.*;
 
 public class GameplayView extends SurfaceView implements Runnable{
     volatile boolean running;
@@ -27,6 +32,12 @@ public class GameplayView extends SurfaceView implements Runnable{
     private DrawableObject pilot;
     public int angle;
 
+    GameInfo gameInfo;
+    private int textOpacity = 255;
+    private boolean textFadingIn = false;
+
+    private boolean orbiting = true;
+
 
     public GameplayView(Context context, int screenSizeX, int screenSizeY) {
         super(context);
@@ -35,10 +46,12 @@ public class GameplayView extends SurfaceView implements Runnable{
         this.screenSizeY = screenSizeY;
         paint = new Paint();
 
+        gameInfo = new GameInfo();
+
         angle=0;
 
-        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{200, 200});
-        gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{260, 260});
+        homePlanet = new DrawableObject(context, R.drawable.planet1, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{300, 300});
+        gravity = new DrawableObject(context, R.drawable.gravity, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{550, 550});
         pilot = new DrawableObject(context, R.drawable.pilot_ship, new int[]{screenSizeX/2, (screenSizeY*9/10)}, new int[]{50, 50});
 
 
@@ -62,7 +75,7 @@ public class GameplayView extends SurfaceView implements Runnable{
     @Override
     public void run () {
         while (running) {
-
+            update();
             draw();
         }
     }
@@ -92,6 +105,7 @@ public class GameplayView extends SurfaceView implements Runnable{
 
             );
 
+            // Changes the angle of the pilot ship
             Matrix matrix = new Matrix();
             matrix.reset();
             matrix.postScale(1, -1,pilot.getBitmap().getWidth() / 2f, pilot.getBitmap().getHeight() / 2f);
@@ -100,10 +114,52 @@ public class GameplayView extends SurfaceView implements Runnable{
             matrix.postTranslate(pilot.getBitmap().getWidth() / 2, pilot.getBitmap().getHeight() / 2); // Centers image
             matrix.postTranslate(pilot.getCoords()[0]+(int)(Math.cos(Math.toRadians(angle))*130), pilot.getCoords()[1]+(int)(Math.sin(Math.toRadians(angle))*130));
             canvas.drawBitmap(pilot.getBitmap(), matrix, paint);
-            angle=(angle+3)%360;
+            if(orbiting) {
+                pilotInOrbit();
+            } else {
+//                float[] pts = new float[2];
+//                pts[0] = (float) pilot.getCoords()[0];
+//                pts[1] = (float) pilot.getCoords()[1];
+//                matrix.mapPoints(pts);
+//                Log.i("pointX", String.valueOf(pilot.getCoords()[0]));
+//                Log.i("pointY", String.valueOf(pilot.getCoords()[1]));
+            }
+
+
+            if (!gameInfo.isPlaying()) {
+                // Draw the "Touch anywhere to begin"
+                Paint textPaint = new Paint();
+                textPaint.setColor(Color.parseColor("#E6FFF2"));
+                textPaint.setStyle(Paint.Style.FILL);
+                textPaint.setTextSize(screenSizeX/20);
+                textPaint.setTextAlign(Paint.Align.CENTER);
+                textPaint.setAlpha(100);
+                if (textOpacity <= 3 && textOpacity >=0) {
+                    textFadingIn = true;
+                } else if (textOpacity <= 255 && textOpacity >= 252) {
+                    textFadingIn = false;
+                }
+                if(textFadingIn) {
+                    textOpacity += 3;
+                } else {
+                    textOpacity -= 3;
+                }
+                textPaint.setAlpha(textOpacity);
+                canvas.drawText(
+                        "Tap anywhere to launch!",
+                        canvas.getWidth() / 2,
+                        screenSizeY / 3,
+                        textPaint
+                    );
+
+            }
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    private void update() {
+
     }
 
 
@@ -115,12 +171,12 @@ public class GameplayView extends SurfaceView implements Runnable{
             case MotionEvent.ACTION_DOWN:
                 touchedX = motionEvent.getX();
                 touchedY = motionEvent.getY();
+                orbiting = false;
+                Log.i("Angle", String.valueOf(angle));
                 break;
             case MotionEvent.ACTION_UP:
                 touchedX = motionEvent.getX();
                 touchedY = motionEvent.getY();
-                System.out.println(touchedX);
-                System.out.println(touchedY);
                 break;
             default:
                 break;
@@ -143,4 +199,13 @@ public class GameplayView extends SurfaceView implements Runnable{
         } catch (InterruptedException e) {
         }
     }
+
+    private void pilotInOrbit () {
+        angle=(angle+3)%360;
+    }
+
+    private void getCoordsFromAngle (int gravitationalRadius) {
+
+    }
+
 }
